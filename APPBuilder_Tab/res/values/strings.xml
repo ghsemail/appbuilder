@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Tab Demo</string>
+    <string name="hello_world">Testpage</string>
+    <string name="tab_button_0">首页</string>
+    <string name="tab_button_1">消息</string>
+    <string name="tab_button_2">好友</string>
+    <string name="tab_button_3">查找</string>
+    <string name="tab_button_4">更多</string>
+
+</resources>

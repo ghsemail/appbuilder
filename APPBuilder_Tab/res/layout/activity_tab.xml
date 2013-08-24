@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RadioGroup
+        android:id="@+id/main_tabs"
+        style="@style/tab_bar" >
+
+        <RadioButton
+            android:id="@+id/tab_radio_button0"
+            style="@style/tab_bar_item"
+            android:checked="true"
+            android:drawableTop="@drawable/icon_home"
+            android:text="@string/tab_button_0" />
+
+        <RadioButton
+            android:id="@+id/tab_radio_button1"
+            style="@style/tab_bar_item"
+            android:drawableTop="@drawable/icon_meassage"
+            android:text="@string/tab_button_1" />
+
+        <RadioButton
+            android:id="@+id/tab_radio_button2"
+            style="@style/tab_bar_item"
+            android:drawableTop="@drawable/icon_selfinfo"
+            android:text="@string/tab_button_2" />
+
+        <RadioButton
+            android:id="@+id/tab_radio_button3"
+            style="@style/tab_bar_item"
+            android:drawableTop="@drawable/icon_square"
+            android:text="@string/tab_button_3" />
+
+        <RadioButton
+            android:id="@+id/tab_radio_button4"
+            style="@style/tab_bar_item"
+            android:drawableTop="@drawable/icon_more"
+            android:text="@string/tab_button_4" />
+    </RadioGroup>
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/main_tabs" />
+
+</RelativeLayout>
