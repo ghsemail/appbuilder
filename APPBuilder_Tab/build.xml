@@ -1,131 +1,67 @@
-<project default="main" basedir=".">
-
-    <property file="../keystore.properties" />
-
-    <property name="apk-name" value="product" />
-    <property name="apk-version" value="latest" />
-    <property name="apk-market" value="dev" />
-
-    <property name="android-jar" value="/home/ubuntu/download/adt-bundle-linux-x86_64-20130729/sdk/platforms/android-18/android.jar" />
-
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="build" name="APPBuilder_Tab">
+    <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="../../../Dev/eclipse"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
+    <path id="Android 4.2.2.libraryclasspath">
+        <pathelement location="../../../Dev/android-sdk-macosx/platforms/android-17/android.jar"/>
+    </path>
+    <path id="Android Private Libraries.libraryclasspath">
+        <pathelement location="libs/android-support-v4.jar"/>
+    </path>
+    <path id="Android Dependencies.libraryclasspath"/>
+    <path id="APPBuilder_Tab.classpath">
+        <pathelement location="bin/classes"/>
+        <path refid="Android 4.2.2.libraryclasspath"/>
+        <path refid="Android Private Libraries.libraryclasspath"/>
+        <path refid="Android Dependencies.libraryclasspath"/>
+    </path>
     <target name="init">
-        <echo>start initing ... </echo>
-
-        <mkdir dir="gen" />
-        <delete>
-            <fileset dir="gen"></fileset>
-        </delete>
-        
-        <mkdir dir="bin/classes" />
-        <delete>
-            <fileset dir="bin/classes"></fileset>
-        </delete>
-        
-        <mkdir dir="build/${apk-version}" />
-
-        <echo>finish initing. </echo>
-    </target>
-
-    <target name="main" depends="init">
-        <echo>generating R.java for project to dir gen (using aapt) ... </echo>
-        <exec executable="aapt">
-            <arg value="package" />
-            <arg value="-m" />
-            <arg value="-J" />
-            <arg value="gen" />
-            <arg value="-M" />
-            <arg value="AndroidManifest.xml" />
-            <arg value="-S" />
-            <arg value="res" />
-            <arg value="-S" />
-            <arg value="../baseworld/res" />
-            <arg value="-I" />
-            <arg value="${android-jar}" />
-            <arg value="--auto-add-overlay" />
-        </exec>
-
-        <echo>generating R.java for library to dir gen (using aapt) ... </echo>
-        <exec executable="aapt">
-            <arg value="package" />
-            <arg value="-m" />
-            <arg value="--non-constant-id" />
-            <arg value="--auto-add-overlay" />
-            <arg value="-J" />
-            <arg value="gen" />
-            <arg value="-M" />
-            <arg value="../baseworld/AndroidManifest.xml" />
-            <arg value="-S" />
-            <arg value="res" />
-            <arg value="-S" />
-            <arg value="../baseworld/res" />
-            <arg value="-I" />
-            <arg value="${android-jar}" />
-        </exec>
-
-        <path id="project.libs">
-            <fileset dir="libs">
-                <include name="*.jar" />
+        <mkdir dir="bin/classes"/>
+        <copy includeemptydirs="false" todir="bin/classes">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
             </fileset>
-        </path>
-        <echo>compiling java files to class files (include R.java, library and the third-party jars) ... </echo>
-        <javac destdir="bin/classes" bootclasspath="${android-jar}">
-            <src path="../baseworld/src" />
-            <src path="src" />
-            <src path="gen" />
-            <classpath refid="project.libs" />
+        </copy>
+        <copy includeemptydirs="false" todir="bin/classes">
+            <fileset dir="gen">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin/classes"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin/classes" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <src path="gen"/>
+            <classpath refid="APPBuilder_Tab.classpath"/>
         </javac>
-
-        <echo>packaging class files (include the third-party jars) to calsses.dex ... </echo>
-        <exec executable="dx">
-            <arg value="--dex" />
-            <arg value="--output=bin/classes.dex" />
-            <arg value="bin/classes" />
-            <arg value="libs" />
-        </exec>
-
-        <echo>packaging resource (include res, assets, AndroidManifest.xml, etc.) to res.zip ... </echo>
-        <exec executable="aapt">
-            <arg value="package" />
-            <arg value="-f" />
-            <arg value="-M" />
-            <arg value="AndroidManifest.xml" />
-            <arg value="-S" />
-            <arg value="res" />
-            <arg value="-S" />
-            <arg value="../baseworld/res" />
-            <arg value="-A" />
-            <arg value="assets" />
-            <arg value="-I" />
-            <arg value="${android-jar}" />
-            <arg value="-F" />
-            <arg value="bin/res.zip" />
-            <arg value="--auto-add-overlay" />
-        </exec>
-
-        <echo>building unsigned.apk ... </echo>
-        <exec executable="apkbuilder">
-            <arg value="bin/unsigned.apk" />
-            <arg value="-u" />
-            <arg value="-z" />
-            <arg value="bin/res.zip" />
-            <arg value="-f" />
-            <arg value="bin/classes.dex" />
-        </exec>
-
-        <echo>signing the unsigned apk to final product apk ... </echo>
-        <exec executable="jarsigner">
-            <arg value="-keystore" />
-            <arg value="../kaiyuanxiangmu_world.keystore" />
-            <arg value="-storepass" />
-	    <arg value="${storepass}" />
-            <arg value="-keypass" />
-	    <arg value="${keypass}" />
-            <arg value="-signedjar" />
-            <arg value="build/${apk-version}/${apk-name}_${apk-version}_${apk-market}.apk" />
-            <arg value="bin/unsigned.apk" />
-	    <arg value="${alias}" />
-        </exec>
-
-        <echo>done.</echo>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
     </target>
 </project>
