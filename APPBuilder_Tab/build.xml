@@ -6,7 +6,7 @@
     <property name="apk-version" value="latest" />
     <property name="apk-market" value="dev" />
 
-    <property name="android-jar" value="/opt/android-sdk-linux/platforms/android-16/android.jar" />
+    <property name="android-jar" value="/data/android-sdk-linux/platforms/android-16/android.jar" />
 
     <target name="init">
         <echo>start initing ... </echo>
