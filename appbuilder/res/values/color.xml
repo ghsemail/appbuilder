@@ -1,0 +1,7 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<color name="content_bg_0">#FFFFFF</color>
+<color name="content_bg_1">#FFDAB9</color><!--桃色 -->
+<color name="content_bg_2">#FFD700</color><!--金色 -->
+<color name="content_bg_3">#FFC0CB</color><!--粉红色 -->
+<color name="content_bg_4">#FF00FF</color><!--紫红色 -->
+</resources>
